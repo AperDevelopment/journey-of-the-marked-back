@@ -1,0 +1,18 @@
+{
+  "name": "journey-of-the-marked-back",
+  "version": "0.1.0",
+  "description": "Le back du wiki officiel de Journey of the Marked",
+  "main": "src/app.js",
+  "scripts": {
+    "dev": "nodemon src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
