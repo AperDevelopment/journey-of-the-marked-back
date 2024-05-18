@@ -1,0 +1,48 @@
+services:
+  back:
+    image: node:22-alpine
+    volumes:
+      - .:/usr/src/app
+    working_dir: /usr/src/app
+    ports:
+      - 3000:3000
+    entrypoint: npm run dev
+    environment:
+      MONGO_USERNAME: ${MONGO_USERNAME}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  mongo:
+    image: mongo:7
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh mongo:27017/test --quiet
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  typesense:
+    image: typesense/typesense:26.0
+    restart: on-failure
+    ports:
+      - "8108:8108"
+    environment:
+      TYPESENSE_API_KEY: xyz
+      TYPESENSE_DATA_DIR: /data/typesense
+      TYPESENSE_ENABLE_CORS: "true"
+    volumes:
+      - typesense-data:/data
+
+volumes:
+  mongo_data:
+  typesense-data:
