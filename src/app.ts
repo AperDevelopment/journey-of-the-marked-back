@@ -1,11 +1,11 @@
-import express, { Request, Response } from "express"
+import express from "express"
+import DatabaseService from "./services/databaseService"
 
 const app = express()
 const port = 3000
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!')
-})
+app.locals.databaseService = new DatabaseService()
+app.locals.databaseService.connect()
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
