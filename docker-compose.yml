@@ -41,7 +41,7 @@ services:
       TYPESENSE_DATA_DIR: /data/typesense
       TYPESENSE_ENABLE_CORS: "true"
     volumes:
-      - typesense-data:/data
+      - typesense-data:/data/typesense
 
 volumes:
   mongo_data:
