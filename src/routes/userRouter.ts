@@ -1,22 +1,20 @@
 import express, { Request, Response } from 'express';
 import UserController from '../controllers/userController';
+import rolesMiddleware from '../middlewares/roleMiddleware';
 
 const router = express.Router();
 const userController = new UserController();
 
 // GET /users
-router.get('/', userController.getUsers);
+router.get('/', rolesMiddleware("admin"), userController.getUsers);
 
 // GET /users/:id
-router.get('/:id', userController.getUserById);
-
-// POST /users
-router.post('/', userController.createUser);
+router.get('/:name', rolesMiddleware('user'), userController.getUserByName);
 
 // PUT /users/:id
-router.put('/:id', userController.updateUser);
+router.put('/:name', rolesMiddleware('user'), userController.updateUser);
 
 // DELETE /users/:id
-router.delete('/:id', userController.deleteUser);
+router.delete('/:name', rolesMiddleware('user'), userController.deleteUser);
 
 export default router;

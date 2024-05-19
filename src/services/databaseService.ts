@@ -7,7 +7,8 @@ class DatabaseService {
     constructor() {
         const user = process.env.MONGO_USERNAME;
         const password = process.env.MONGO_PASSWORD;
-        const uri = `mongodb://${user}:${password}@mongo:27017`
+        const port = process.env.MONGO_PORT;
+        const uri = `mongodb://${user}:${password}@mongo:${port}`
         this.client = new MongoClient(uri);
         this.db = {} as Db; // Initialize the 'db' property
     }
