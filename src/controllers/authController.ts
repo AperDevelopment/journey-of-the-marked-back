@@ -3,16 +3,24 @@ import { User } from '../models/user';
 import UserService from '../services/userService';
 import JwtService from '../services/jwtService';
 
+
 class AuthController {
+    private userService : UserService;
+    private jwtService : JwtService;
+
+    constructor(userService : UserService, jwtService : JwtService) {
+        this.userService = userService;
+        this.jwtService = jwtService;
+    }
+
     // Register a new user
-    async register(req: Request, res: Response) {
-        const userService = req.app.locals.userService as UserService;
+    register = async (req: Request, res: Response) => {
         if (!req.body.name || !req.body.email || !req.body.password) {
             res.status(400).send('Invalid request body');
             return;
         }
 
-        const existingUser = await userService.getUserByName(req.body.name);
+        const existingUser = await this.userService.getUserByName(req.body.name);
         if (existingUser) {
             res.status(409).send('User already exists');
             return;
@@ -24,24 +32,24 @@ class AuthController {
             password: req.body.password,
             role: "user"
         } as User;
-        if (await userService.createUser(user)) {
+        if (await this.userService.createUser(user)) {
             res.status(201).send('User created');
+            console.log(res);
             return;
         }
         res.status(500).send('Failed to create user');
     }
 
     // Login an existing user
-    async login(req: Request, res: Response) {
-        const userService = req.app.locals.userService as UserService;
-        const jwtService = req.app.locals.jwtService as JwtService;
-
+    login = async (req: Request, res: Response) => {
+        console.log(this.userService);
+        console.log(this.jwtService);
         if (!req.body.name || !req.body.password) {
             res.status(400).send('Invalid request body');
             return;
         }
 
-        const user = await userService.getUserByNameWithPassword(req.body.name);
+        const user = await this.userService.getUserByNameWithPassword(req.body.name);
         if (!user) {
             res.status(404).send('User not found');
             return;
@@ -52,8 +60,8 @@ class AuthController {
             return;
         }
 
-        const token = jwtService.generateToken({ name: user.name }, '1h');
-        res.json({token});
+        const token = this.jwtService.generateToken({ name: user.name }, '1h');
+        res.json({token, role: user.role});
     }
 }
 

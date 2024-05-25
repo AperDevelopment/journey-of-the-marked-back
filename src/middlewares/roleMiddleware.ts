@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { RequestWithUser } from '../models/user';
 
-const rolesMiddleware = function (roles: string) {
+const rolesMiddleware = function (role: string) {
     return function (req: Request, res: Response, next: NextFunction) {
         const user = (req as RequestWithUser).user;
-        if (user && (user.role === roles || user.role === "admin")) {
+        if (user && (user.role === role || user.role === "admin")) {
             next();
             return;
         }

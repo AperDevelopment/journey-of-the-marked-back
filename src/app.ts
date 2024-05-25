@@ -6,23 +6,20 @@ import UserService from "./services/userService"
 import JwtService from "./services/jwtService"
 import authMiddleware from "./middlewares/authMiddleware"
 
-const app = express()
 const port = process.env.PORT
 const secret = process.env.SECRET as string
 
 const databaseService = new DatabaseService()
-app.locals.userService = new UserService(databaseService)
-app.locals.jwtService = new JwtService(secret)
+const userService = new UserService(databaseService)
+const jwtService = new JwtService(secret)
 
+const app = express()
 app.use(express.json()) // Add this line to parse JSON body
-
-app.use(authMiddleware)
-
-app.use("/users", userRouter)
-app.use("/auth", authRouter)
-
+app.use(authMiddleware(userService, jwtService))
+app.use("/users", userRouter(userService))
+app.use("/auth", authRouter(userService, jwtService))
 app.listen(port, async () => {
   await databaseService.connect()
-  app.locals.userService.createAdminIfNotExist()
+  await userService.createAdminIfNotExist()
   console.log(`Example app listening on port ${port}`)
 })
