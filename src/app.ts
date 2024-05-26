@@ -5,7 +5,9 @@ import DatabaseService from "./services/databaseService"
 import UserService from "./services/userService"
 import JwtService from "./services/jwtService"
 import authMiddleware from "./middlewares/authMiddleware"
+import dotenv from "dotenv"
 
+dotenv.config()
 const port = process.env.PORT
 const secret = process.env.SECRET as string
 

@@ -34,7 +34,6 @@ class AuthController {
         } as User;
         if (await this.userService.createUser(user)) {
             res.status(201).send('User created');
-            console.log(res);
             return;
         }
         res.status(500).send('Failed to create user');
@@ -42,8 +41,6 @@ class AuthController {
 
     // Login an existing user
     login = async (req: Request, res: Response) => {
-        console.log(this.userService);
-        console.log(this.jwtService);
         if (!req.body.name || !req.body.password) {
             res.status(400).send('Invalid request body');
             return;

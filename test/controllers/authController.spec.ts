@@ -41,10 +41,8 @@ describe('AuthController', () => {
             // Call the register method
             await authController.register(req as Request, res as Response);
 
-            console.log(res.status);
-
-            // Assert that the response status is 200 and the user is registered
-            expect(stub.calledWith(200)).to.be.ok;
+            // Assert that the response status is 201 and the user is registered
+            expect(stub.calledWith(201)).to.be.ok;
         });
     });
 })
