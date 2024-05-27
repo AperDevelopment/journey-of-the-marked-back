@@ -58,7 +58,7 @@ class UserService {
         if (!await this.createUser(newUser)) {
             console.error("Failed to create admin")
         }
-      }
+    }
 
     private dbToUser(dbUser: any): User {
         return {

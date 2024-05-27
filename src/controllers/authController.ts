@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { User } from '../models/user';
+import { User, isUser } from '../models/user';
 import UserService from '../services/userService';
 import JwtService from '../services/jwtService';
 
@@ -15,8 +15,10 @@ class AuthController {
 
     // Register a new user
     register = async (req: Request, res: Response) => {
-        if (!req.body.name || !req.body.email || !req.body.password) {
-            res.status(400).send('Invalid request body');
+        req.body.role = "user";
+
+        if (!isUser(req.body)) {
+            res.status(400).send('Bad request');
             return;
         }
 
@@ -26,13 +28,7 @@ class AuthController {
             return;
         }
 
-        const user = {
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password,
-            role: "user"
-        } as User;
-        if (await this.userService.createUser(user)) {
+        if (await this.userService.createUser(req.body as User)) {
             res.status(201).send('User created');
             return;
         }

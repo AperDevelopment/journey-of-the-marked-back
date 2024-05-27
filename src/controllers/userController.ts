@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { RequestWithUser, User } from '../models/user';
+import { RequestWithUser, User, isUser } from '../models/user';
 import UserService from '../services/userService';
 
 class UserController {
@@ -31,11 +31,14 @@ class UserController {
     updateUser = async (req: Request, res: Response) => {
         const user = (req as RequestWithUser).user;
 
-        for (const key in req.body) {
-            if (key !== 'name' && key !== 'email' && key !== 'password' && (key !== 'role' || user.role !== 'admin')) {
-                res.status(400).send('Bad request');
-                return;
-            }
+        if (req.body.role && user.role !== 'admin') {
+            res.status(403).send('Forbidden');
+            return;
+        }
+
+        if (! isUser(req.body)) {
+            res.status(400).send('Bad request');
+            return;
         }
 
         if (!await this.userService.getUserByName(req.params.name)) {

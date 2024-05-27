@@ -8,6 +8,8 @@
     "serve": "node dist/app.js",
     "build": "npx tsc",
     "test": "mocha --require ts-node/register 'test/**/*.spec.ts'",
+    "test:unit": "mocha --require ts-node/register 'test/**/*.spec.ts' --ignore 'test/endpoints/*.spec.ts'",
+    "test:endpoints": "mocha --require ts-node/register 'test/endpoints/*.spec.ts'",
     "coverage": "nyc npm run test"
   },
   "author": "",
