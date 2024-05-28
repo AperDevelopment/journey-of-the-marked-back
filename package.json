@@ -35,5 +35,15 @@
     "supertest": "^7.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
+  },
+  "nyc": {
+    "include": [
+      "src/**/*.ts"
+    ],
+    "exclude": [
+      "src/models/*.ts",
+      "src/routes/*.ts",
+      "src/services/databaseService.ts"
+    ]
   }
 }

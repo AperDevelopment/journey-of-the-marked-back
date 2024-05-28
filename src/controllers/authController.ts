@@ -37,7 +37,7 @@ class AuthController {
 
     // Login an existing user
     login = async (req: Request, res: Response) => {
-        if (!req.body.name || !req.body.password) {
+        if (!req.body.name || !req.body.password || typeof req.body.name !== 'string' || typeof req.body.password !== 'string') {
             res.status(400).send('Invalid request body');
             return;
         }
