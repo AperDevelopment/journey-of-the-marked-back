@@ -54,7 +54,7 @@ class AuthController {
         }
 
         const token = this.jwtService.generateToken({ name: user.name }, '1h');
-        res.json({token, role: user.role});
+        res.json({token, name:user.name, role: user.role});
     }
 }
 

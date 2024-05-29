@@ -6,6 +6,7 @@ import UserService from "./services/userService"
 import JwtService from "./services/jwtService"
 import authMiddleware from "./middlewares/authMiddleware"
 import dotenv from "dotenv"
+import cors from "cors"
 
 dotenv.config()
 const port = process.env.PORT
@@ -16,6 +17,7 @@ const userService = new UserService(databaseService)
 const jwtService = new JwtService(secret)
 
 const app = express()
+app.use(cors())
 app.use(express.json()) // Add this line to parse JSON body
 app.use(authMiddleware(userService, jwtService))
 app.use("/users", userRouter(userService))
