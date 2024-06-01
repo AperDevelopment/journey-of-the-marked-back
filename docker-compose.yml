@@ -1,19 +1,4 @@
 services:
-  back:
-    image: node:22-alpine
-    volumes:
-      - .:/usr/src/app
-    working_dir: /usr/src/app
-    ports:
-      - 3000:3000
-    entrypoint: npm run dev
-    environment:
-      MONGO_USERNAME: ${MONGO_USERNAME}
-      MONGO_PASSWORD: ${MONGO_PASSWORD}
-    depends_on:
-      mongo:
-        condition: service_healthy
-
   mongo:
     image: mongo:7
     restart: always
